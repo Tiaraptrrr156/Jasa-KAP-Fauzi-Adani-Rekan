@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAP Fauzi & Rekan | Kantor Akuntan Publik Resmi</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    /* Tailwind Configuration */
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            darkNavy: '#061426',
+            navy: '#0B1F3A',
+            gold: '#C9A227',
+            softGold: '#D8BC63',
+            offWhite: '#F7F6F2',
+            textGray: '#6B7280'
+          },
+          fontFamily: {
+            heading: ['"Playfair Display"', 'serif'],
+            body: ['"Inter"', 'sans-serif']
+          }
+        }
+      }
+    };
+
+    /* Early safe image fallback handler */
+    function handlePimpinanPhotoFallback(imgElement) {
+      if (!imgElement) return;
+      if (!imgElement.dataset.triedEncoded) {
+        imgElement.dataset.triedEncoded = "true";
+        imgElement.src = encodeURI("Company Profile KAP Fauzi (4).jpg");
+        return;
+      }
+      imgElement.classList.add('hidden');
+      var parent = imgElement.parentElement;
+      if (parent) {
+        var fallback = parent.querySelector('.pimpinan-svg-fallback');
+        if (fallback) {
+          fallback.classList.remove('hidden');
+          fallback.classList.add('flex');
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #061426;
+      color: #1F2937;
+      overflow-x: hidden;
+    }
+    
+    h1, h2, h3, .font-heading {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Reading scroll progress bar */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #C9A227, #D8BC63, #FDE68A);
+      z-index: 100;
+      width: 0%;
+      box-shadow: 0 0 10px rgba(201, 162, 39, 0.6);
+      transition: width 0.1s ease-out;
+    }
+
+    /* Constellation canvas background */
+    #hero-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    /* Subtle grid background */
+    .hero-grid-bg {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(201, 162, 39, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(201, 162, 39, 0.04) 1px, transparent 1px);
+    }
+
+    /* Spotlight card hover glow */
+    .spotlight-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    }
+    .spotlight-card:hover {
+      transform: translateY(-4px);
+    }
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      top: var(--mouse-y, -150px);
+      left: var(--mouse-x, -150px);
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(201, 162, 39, 0.12) 0%, rgba(201, 162, 39, 0) 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 50%;
+    }
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Button shimmer effect */
+    .shimmer-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .shimmer-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0) 80%
+      );
+      transform: rotate(25deg);
+      transition: none;
+    }
+    .shimmer-btn:hover::after {
+      left: 120%;
+      transition: left 0.75s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-darkNavy text-gray-800 antialiased selection:bg-gold selection:text-navy">
+
+  <!-- Top Scroll Depth Progress -->
+  <div id="scroll-progress"></div>
+
+  <!-- Hidden Photo Pickers for all 6 Team Members -->
+  <input type="file" id="fauziPhotoInput" accept="image/*" class="hidden" onchange="handleMemberPhotoSelect(event, 'pimpinan', 'Fauzi Adani')">
+  <input type="file" id="pimpinanPhotoInput" accept="image/*" class="hidden" onchange="handlePimpinanPhotoFileSelect(event)">
+  <input type="file" id="sandrinaPhotoInput" accept="image/*" class="hidden" onchange="handleMemberPhotoSelect(event, 'sandrina', 'Sandrina Salwa S.')">
+  <input type="file" id="bunayaPhotoInput" accept="image/*" class="hidden" onchange="handleMemberPhotoSelect(event, 'bunaya', 'Bunaya Dewi K.')">
+  <input type="file" id="asyaPhotoInput" accept="image/*" class="hidden" onchange="handleMemberPhotoSelect(event, 'asya', 'Asya Safira R.')">
+  <input type="file" id="tiaraPhotoInput" accept="image/*" class="hidden" onchange="handleMemberPhotoSelect(event, 'tiara', 'Tiara Ulung P.')">
+  <input type="file" id="hambaPhotoInput" accept="image/*" class="hidden" onchange="handleMemberPhotoSelect(event, 'hamba', 'Hamba Ikhsan A.')">
+
+  <header class="sticky top-0 z-50 transition-all duration-300 bg-darkNavy/95 backdrop-blur-md border-b border-gold/20" id="main-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand / Logo Link -->
+        <a href="#home" class="flex items-center space-x-3.5 group focus:outline-none">
+          <!-- Official Logo on high-contrast white badge -->
+          <div class="w-12 h-12 rounded-xl bg-white border border-gold/60 p-1 shadow-md group-hover:shadow-gold/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+            <svg class="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="200" r="190" fill="#FFFFFF"/>
+              <!-- Growth Leaves -->
+              <path d="M200 40 C195 70 200 95 200 120 C200 95 205 70 200 40 Z" fill="#C9A227"/>
+              <path d="M200 80 C175 60 150 75 160 100 C175 105 190 95 200 80 Z" fill="#D8BC63"/>
+              <path d="M200 80 C225 60 250 75 240 100 C225 105 210 95 200 80 Z" fill="#D8BC63"/>
+              <!-- Chart Bars -->
+              <path d="M170 145 L190 130 L190 210 L170 210 Z" fill="#0B1F3A"/>
+              <path d="M200 120 L220 105 L220 210 L200 210 Z" fill="#C9A227"/>
+              <path d="M230 100 L250 85 L250 210 L230 210 Z" fill="#0B1F3A"/>
+              <!-- Ascending Growth Arrow -->
+              <path d="M165 205 Q220 170 290 95 L285 125 L310 70 L255 80 L275 92 Q215 160 165 205 Z" fill="#C9A227"/>
+              <!-- Letter F (Navy) -->
+              <path d="M60 150 L160 150 L160 185 L105 185 L105 205 L150 205 L135 245 L105 245 L105 290 L60 290 Z" fill="#061426"/>
+              <!-- Handshake Unit -->
+              <path d="M135 245 L175 285 L200 260 L160 220 Z" fill="#0B1F3A"/>
+              <path d="M175 285 L190 300 L205 285 L190 270 Z" fill="#C9A227"/>
+              <path d="M190 300 L205 315 L220 300 L205 285 Z" fill="#C9A227"/>
+              <path d="M205 315 L220 330 L235 315 L220 300 Z" fill="#C9A227"/>
+              <path d="M200 260 L240 220 L275 245 L255 270 L220 240 Z" fill="#C9A227"/>
+              <!-- Letter R (Gold) -->
+              <path d="M260 150 L340 150 C370 150 380 180 370 210 C360 235 340 245 320 250 L375 320 L330 320 L285 255 L285 320 L260 320 Z" fill="#C9A227"/>
+              <path d="M285 175 L325 175 C340 175 345 190 340 205 C335 220 325 225 310 225 L285 225 Z" fill="#FFFFFF"/>
+              <!-- Circular Swoosh -->
+              <path d="M100 280 C120 330 170 350 220 345 C270 340 310 310 315 275 C295 320 240 340 190 330 C150 320 115 295 100 280 Z" fill="#0B1F3A"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center space-x-1.5">
+              <span class="text-white font-heading font-bold text-lg tracking-wider">FAUZI & REKAN</span>
+            </div>
+            <p class="text-[10px] uppercase tracking-[0.22em] text-softGold font-semibold">Kantor Akuntan Publik</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-7">
+          <a href="#home" class="text-sm font-medium text-white/90 hover:text-gold transition-colors py-1">Home</a>
+          <a href="#tentang" class="text-sm font-medium text-white/80 hover:text-gold transition-colors py-1">Tentang Kami</a>
+          <a href="#layanan" class="text-sm font-medium text-white/80 hover:text-gold transition-colors py-1">Layanan</a>
+          <a href="#struktur" class="text-sm font-medium text-white/80 hover:text-gold transition-colors py-1">Struktur KAP</a>
+          <a href="#keunggulan" class="text-sm font-medium text-white/80 hover:text-gold transition-colors py-1">Keunggulan</a>
+          <a href="#kontak" class="text-sm font-medium text-white/80 hover:text-gold transition-colors py-1">Kontak</a>
+        </nav>
+
+        <!-- Right Side Consultation CTA -->
+        <div class="hidden md:flex items-center space-x-3">
+          <button onclick="openConsultationModal()" class="shimmer-btn bg-gold hover:bg-softGold text-darkNavy font-semibold text-xs uppercase tracking-wider px-5 py-2.5 rounded-lg shadow-md hover:shadow-gold/40 transition duration-300">
+            Konsultasi
+          </button>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2 focus:outline-none" aria-label="Buka Menu">
+            <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-navy/98 border-b border-gold/20 px-6 pt-3 pb-6 space-y-3">
+      <a href="#home" class="mobile-link block text-base font-medium text-white hover:text-gold py-2 border-b border-white/10">Home</a>
+      <a href="#tentang" class="mobile-link block text-base font-medium text-white/80 hover:text-gold py-2 border-b border-white/10">Tentang Kami</a>
+      <a href="#layanan" class="mobile-link block text-base font-medium text-white/80 hover:text-gold py-2 border-b border-white/10">Layanan</a>
+      <a href="#struktur" class="mobile-link block text-base font-medium text-white/80 hover:text-gold py-2 border-b border-white/10">Struktur KAP</a>
+      <a href="#keunggulan" class="mobile-link block text-base font-medium text-white/80 hover:text-gold py-2 border-b border-white/10">Keunggulan</a>
+      <a href="#kontak" class="mobile-link block text-base font-medium text-white/80 hover:text-gold py-2 border-b border-white/10">Kontak</a>
+      <div class="pt-2">
+        <button onclick="openConsultationModal()" class="w-full bg-gold text-darkNavy font-semibold text-sm py-3 rounded-lg text-center shadow-md">
+          Jadwalkan Konsultasi
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section id="home" class="relative min-h-[92vh] flex items-center bg-darkNavy text-white overflow-hidden hero-grid-bg">
+    <!-- Interactive Canvas Particles -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Radial Decorative Gradients -->
+    <div class="absolute top-1/4 -left-32 w-96 h-96 bg-navy/80 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-10 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        <!-- Left Hero Copy -->
+        <div class="lg:col-span-7 space-y-7 text-center lg:text-left">
+          
+          <!-- Official Accreditation Pill -->
+          <div class="inline-flex items-center space-x-2 bg-navy/90 border border-gold/40 px-4 py-1.5 rounded-full shadow-inner">
+            <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+            <span class="text-xs uppercase font-medium tracking-wider text-softGold">Kementerian Keuangan RI & Anggota IAPI</span>
+          </div>
+
+          <!-- Main Hero Headline -->
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-white leading-tight tracking-tight">
+            Profesional dalam Audit, <br class="hidden sm:inline">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold via-softGold to-yellow-200">
+              Terpercaya dalam Setiap Laporan.
+            </span>
+          </h1>
+
+          <!-- Official Subheadline -->
+          <p class="text-base sm:text-lg text-gray-300 font-light leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            KAP Fauzi & Rekan hadir memberikan layanan jasa akuntan publik dan audit dengan mengutamakan integritas, profesionalisme, independensi, dan kualitas guna mewujudkan fondasi bisnis yang akuntabel dan siap bersaing.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="#layanan" class="shimmer-btn w-full sm:w-auto px-7 py-3.5 bg-gold hover:bg-softGold text-darkNavy font-bold rounded-lg text-sm tracking-wide shadow-lg hover:shadow-gold/30 transition duration-300 flex items-center justify-center space-x-2">
+              <span>Lihat Layanan</span>
+              <i class="fa-solid fa-arrow-right text-xs"></i>
+            </a>
+            <a href="#kontak" class="w-full sm:w-auto px-7 py-3.5 bg-navy/90 hover:bg-navy text-white border border-gold/40 hover:border-gold font-medium rounded-lg text-sm tracking-wide transition duration-300 flex items-center justify-center space-x-2">
+              <i class="fa-regular fa-envelope text-gold"></i>
+              <span>Hubungi Kami</span>
+            </a>
+          </div>
+
+          <!-- Quick Stat Trust Points -->
+          <div class="pt-6 border-t border-white/10 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 text-left">
+            <div>
+              <p class="text-2xl font-heading font-bold text-gold">SPAP</p>
+              <p class="text-xs text-gray-400 mt-0.5">Standar Audit Resmi</p>
+            </div>
+            <div>
+              <p class="text-2xl font-heading font-bold text-gold">SAK</p>
+              <p class="text-xs text-gray-400 mt-0.5">Kepatuhan Standar</p>
+            </div>
+            <div>
+              <p class="text-2xl font-heading font-bold text-gold">100%</p>
+              <p class="text-xs text-gray-400 mt-0.5">Independen & Objektif</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Hero Visual: High-Contrast White Plaque Badge -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="w-full max-w-md bg-white text-darkNavy p-8 sm:p-10 rounded-2xl border-2 border-gold/70 shadow-2xl relative group">
+            
+            <!-- Gold Corner Flourishes -->
+            <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-gold pointer-events-none"></div>
+            <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-gold pointer-events-none"></div>
+            <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-gold pointer-events-none"></div>
+            <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-gold pointer-events-none"></div>
+
+            <!-- Emblem Presentation with Crisp Navy/Gold elements -->
+            <div class="text-center space-y-5">
+              <div class="w-40 h-40 mx-auto transition-transform duration-500 group-hover:scale-105">
+                <svg class="w-full h-full filter drop-shadow-md" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Growth Leaves -->
+                  <path d="M200 40 C195 70 200 95 200 120 C200 95 205 70 200 40 Z" fill="#C9A227"/>
+                  <path d="M200 80 C175 60 150 75 160 100 C175 105 190 95 200 80 Z" fill="#D8BC63"/>
+                  <path d="M200 80 C225 60 250 75 240 100 C225 105 210 95 200 80 Z" fill="#D8BC63"/>
+                  <!-- Chart Bars -->
+                  <path d="M170 145 L190 130 L190 210 L170 210 Z" fill="#0B1F3A"/>
+                  <path d="M200 120 L220 105 L220 210 L200 210 Z" fill="#C9A227"/>
+                  <path d="M230 100 L250 85 L250 210 L230 210 Z" fill="#0B1F3A"/>
+                  <!-- Ascending Growth Arrow -->
+                  <path d="M165 205 Q220 170 290 95 L285 125 L310 70 L255 80 L275 92 Q215 160 165 205 Z" fill="#C9A227"/>
+                  <!-- Letter F (Navy) -->
+                  <path d="M60 150 L160 150 L160 185 L105 185 L105 205 L150 205 L135 245 L105 245 L105 290 L60 290 Z" fill="#061426"/>
+                  <!-- Handshake Unit -->
+                  <path d="M135 245 L175 285 L200 260 L160 220 Z" fill="#0B1F3A"/>
+                  <path d="M175 285 L190 300 L205 285 L190 270 Z" fill="#C9A227"/>
+                  <path d="M190 300 L205 315 L220 300 L205 285 Z" fill="#C9A227"/>
+                  <path d="M205 315 L220 330 L235 315 L220 300 Z" fill="#C9A227"/>
+                  <path d="M200 260 L240 220 L275 245 L255 270 L220 240 Z" fill="#C9A227"/>
+                  <!-- Letter R (Gold) -->
+                  <path d="M260 150 L340 150 C370 150 380 180 370 210 C360 235 340 245 320 250 L375 320 L330 320 L285 255 L285 320 L260 320 Z" fill="#C9A227"/>
+                  <path d="M285 175 L325 175 C340 175 345 190 340 205 C335 220 325 225 310 225 L285 225 Z" fill="#FFFFFF"/>
+                  <!-- Circular Arc -->
+                  <path d="M100 280 C120 330 170 350 220 345 C270 340 310 310 315 275 C295 320 240 340 190 330 C150 320 115 295 100 280 Z" fill="#0B1F3A"/>
+                </svg>
+              </div>
+
+              <!-- Formal Brand Typography from Cover Page -->
+              <div class="border-t border-b border-gold/30 py-3.5 space-y-1">
+                <div class="flex items-center justify-center space-x-2">
+                  <span class="h-[1px] w-6 bg-gold"></span>
+                  <h3 class="font-heading font-extrabold text-2xl sm:text-3xl text-navy tracking-wide">FAUZI & REKAN</h3>
+                  <span class="h-[1px] w-6 bg-gold"></span>
+                </div>
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-gray-800">KANTOR AKUNTAN PUBLIK</p>
+                <p class="text-[11px] font-medium tracking-[0.18em] text-gold uppercase pt-0.5">AKUNTAN PUBLIK | AUDIT</p>
+              </div>
+
+              <!-- Operational Badges -->
+              <div class="flex items-center justify-center gap-2 pt-1 flex-wrap text-xs text-gray-600">
+                <span class="bg-offWhite px-3 py-1 rounded-full border border-gray-200">
+                  <i class="fa-solid fa-shield-halved text-gold mr-1"></i> Asurans & Non-Asurans
+                </span>
+                <span class="bg-offWhite px-3 py-1 rounded-full border border-gray-200">
+                  <i class="fa-solid fa-location-dot text-gold mr-1"></i> Depok, Jawa Barat
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-navy border-y border-gold/25 py-10 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-white/10 text-center">
+        
+        <div class="pt-4 sm:pt-0 sm:px-4">
+          <div class="flex items-center justify-center space-x-2 mb-1">
+            <i class="fa-solid fa-users-gear text-gold text-2xl"></i>
+            <span class="text-3xl sm:text-4xl font-heading font-extrabold text-white count-up" data-target="6">0</span>
+            <span class="text-gold font-heading font-bold text-2xl">Profesional</span>
+          </div>
+          <p class="text-xs sm:text-sm text-gray-300">Tim profesional dengan pembagian tugas dan tanggung jawab terstruktur.</p>
+        </div>
+
+        <div class="pt-4 sm:pt-0 sm:px-4">
+          <div class="flex items-center justify-center space-x-2 mb-1">
+            <i class="fa-solid fa-file-invoice-dollar text-gold text-2xl"></i>
+            <span class="text-2xl sm:text-3xl font-heading font-bold text-white">Audit & Akuntansi</span>
+          </div>
+          <p class="text-xs sm:text-sm text-gray-300">Layanan jasa atestasi dan konsultansi menyeluruh untuk kebutuhan dunia usaha.</p>
+        </div>
+
+        <div class="pt-4 sm:pt-0 sm:px-4">
+          <div class="flex items-center justify-center space-x-2 mb-1">
+            <i class="fa-solid fa-scale-balanced text-gold text-2xl"></i>
+            <span class="text-2xl sm:text-3xl font-heading font-bold text-white">Integrity & Quality</span>
+          </div>
+          <p class="text-xs sm:text-sm text-gray-300">Mengutamakan independensi, objektivitas, dan kepatuhan penuh SPAP.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="tentang" class="py-20 lg:py-28 bg-offWhite text-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Left: Corporate History & Narrative -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center space-x-2 bg-white border border-gold/30 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-navy">
+            <span class="w-2 h-2 rounded-full bg-gold"></span>
+            <span>Tentang Kami & Sejarah Pendirian</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-heading font-bold text-navy leading-tight">
+            Mitra Strategis Menuju Tata Kelola Keuangan yang Transparan dan Kredibel.
+          </h2>
+
+          <div class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed">
+            <p>
+              <strong class="text-navy">KAP Fauzi & Rekan</strong> resmi didirikan pada tanggal 
+              <span class="text-navy font-semibold underline decoration-gold">15 Agustus 2026</span> 
+              di bawah kepemimpinan <strong>Fauzi Adani, S.E., Ak., CA., CPA</strong> selaku Managing Partner bersama lima rekan profesional lainnya: <em>Sandrina Salwa, Tiara Ulung, Asya Safira, Bunaya Dewi, dan Hamba Ikhsan</em>.
+            </p>
+            <p>
+              Sejarah berdirinya firma ini berawal dari visi bersama para pendiri yang melihat tingginya urgensi literasi keuangan pada sektor bisnis rintisan (startup) dan UMKM. Kami menemukan banyak entitas bisnis kewirausahaan yang memiliki produk unggulan, namun terhambat pertumbuhannya akibat tata kelola keuangan yang belum transparan dan minimnya pengendalian internal.
+            </p>
+            <p>
+              Berangkat dari keresahan tersebut, <strong>KAP Fauzi & Rekan</strong> hadir bukan sekadar untuk memberikan opini kepatuhan formal, melainkan sebagai <strong>Mitra Strategis</strong> yang mendampingi para pelaku usaha dalam membangun fondasi bisnis yang akuntabel, kredibel, dan siap bersaing di kancah nasional.
+            </p>
+          </div>
+
+          <!-- Official Permits & Standards -->
+          <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-navy flex items-center">
+              <i class="fa-solid fa-certificate text-gold mr-2 text-sm"></i> Landasan Regulasi & Metodologi
+            </h4>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Berlandaskan izin resmi dari Kementerian Keuangan Republik Indonesia dan terdaftar sebagai anggota Institut Akuntan Publik Indonesia (IAPI). Kami mengombinasikan keahlian teknis berbasis Standar Profesional Akuntan Publik (SPAP) dan Standar Akuntansi Keuangan (SAK) dengan pendekatan audit modern berbasis risiko (<em>risk-based audit</em>).
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Official Leadership Profile & 3 Core Values -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Managing Partner Highlight Card -->
+          <div class="bg-navy text-white p-6 rounded-xl border border-gold/40 shadow-xl space-y-4">
+            <div class="flex items-center space-x-4 pb-4 border-b border-white/10">
+              
+              <!-- Portrait Container with fallback -->
+              <div class="relative w-16 h-16 rounded-full p-0.5 bg-gradient-to-tr from-gold via-softGold to-yellow-100 flex-shrink-0 cursor-pointer group" onclick="triggerPimpinanPhotoUpload()" title="Klik untuk memuat atau mengganti foto langsung">
+                <div class="w-full h-full rounded-full overflow-hidden bg-darkNavy border border-darkNavy relative flex items-center justify-center">
+                  <img src="Company Profile KAP Fauzi (4).jpg" 
+                       alt="Fauzi Adani, S.E., Ak., CA., CPA" 
+                       class="pimpinan-img-target w-full h-full rounded-full object-cover object-top"
+                       onerror="if(window.handlePimpinanPhotoFallback){handlePimpinanPhotoFallback(this);}else{this.classList.add('hidden');var fb=this.parentElement?this.parentElement.querySelector('.pimpinan-svg-fallback'):null;if(fb){fb.classList.remove('hidden');fb.classList.add('flex');}}">
+                  <!-- Fallback Vector Silhouette -->
+                  <div class="pimpinan-svg-fallback hidden w-full h-full rounded-full bg-[#991b1b] flex items-center justify-center">
+                    <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none">
+                      <circle cx="50" cy="50" r="48" fill="#991b1b"/>
+                      <path d="M20 90 C22 75 35 68 50 68 C65 68 78 75 80 90 Z" fill="#0A1118"/>
+                      <polygon points="42,68 50,86 58,68" fill="#FFFFFF"/>
+                      <polygon points="48,70 50,88 52,70" fill="#000000"/>
+                      <circle cx="50" cy="46" r="18" fill="#D4A373"/>
+                      <path d="M33 42 C33 30 40 25 50 25 C60 25 67 30 67 42 C67 35 60 30 50 30 C40 30 33 35 33 42 Z" fill="#1C1917"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gold text-darkNavy text-[10px] flex items-center justify-center font-bold">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-heading font-bold text-base text-white">Fauzi Adani, S.E., Ak., CA., CPA</h4>
+                <p class="text-xs text-softGold uppercase tracking-wider font-semibold">Managing Partner / Pimpinan KAP</p>
+              </div>
+            </div>
+
+            <p class="text-xs text-gray-300 leading-relaxed italic">
+              "Kami berkomitmen memberikan keyakinan memadai dan mendampingi entitas bisnis dengan integritas penuh, objektivitas, serta kepatuhan pada standar profesional tertinggi."
+            </p>
+          </div>
+
+          <!-- 3 Core Values -->
+          <div class="space-y-3.5">
+            <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-start space-x-3.5 shadow-sm">
+              <div class="w-10 h-10 rounded-lg bg-gold/15 text-gold flex items-center justify-center flex-shrink-0 text-base">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-navy uppercase tracking-wide">Integritas</h4>
+                <p class="text-xs text-gray-600 mt-0.5">Menjaga kejujuran, objektivitas, dan kepatuhan kode etik dalam setiap perikatan kerja.</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-start space-x-3.5 shadow-sm">
+              <div class="w-10 h-10 rounded-lg bg-gold/15 text-gold flex items-center justify-center flex-shrink-0 text-base">
+                <i class="fa-solid fa-briefcase"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-navy uppercase tracking-wide">Profesionalisme</h4>
+                <p class="text-xs text-gray-600 mt-0.5">Memberikan layanan berbasis kompetensi tinggi sesuai Standar Profesional Akuntan Publik (SPAP).</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-start space-x-3.5 shadow-sm">
+              <div class="w-10 h-10 rounded-lg bg-gold/15 text-gold flex items-center justify-center flex-shrink-0 text-base">
+                <i class="fa-solid fa-handshake-simple"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-navy uppercase tracking-wide">Kepercayaan</h4>
+                <p class="text-xs text-gray-600 mt-0.5">Menjaga kerahasiaan informasi, independensi, dan kepentingan strategis klien secara berkesinambungan.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-20 bg-darkNavy text-white border-t border-gold/20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Heading -->
+      <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
+        <span class="text-xs uppercase tracking-widest text-softGold font-semibold">Arah & Komitmen Strategis</span>
+        <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white">Visi dan Misi KAP Fauzi & Rekan</h2>
+        <div class="w-20 h-0.5 bg-gold mx-auto mt-3"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        <!-- Visi Card -->
+        <div class="lg:col-span-5 bg-navy p-8 rounded-2xl border-2 border-gold/50 shadow-xl flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none text-gold">
+            <i class="fa-solid fa-eye text-9xl"></i>
+          </div>
+          <div class="space-y-4 relative z-10">
+            <div class="inline-flex items-center space-x-2 bg-darkNavy px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider text-gold border border-gold/30">
+              <i class="fa-regular fa-compass"></i>
+              <span>Visi Utama</span>
+            </div>
+            <h3 class="text-2xl font-heading font-bold text-white leading-snug">
+              Menjadi Kantor Akuntan Publik yang Terpercaya, Berintegritas Tinggi, dan Unggul
+            </h3>
+            <p class="text-sm text-gray-300 leading-relaxed font-light">
+              "Menjadi Kantor Akuntan Publik yang terpercaya, berintegritas tinggi, dan unggul dalam memberikan jasa serta kepatuhan akuntansi guna mendukung transparansi dan akuntabilitas dunia usaha di tingkat nasional."
+            </p>
+          </div>
+          <div class="pt-6 border-t border-white/10 mt-6 relative z-10">
+            <p class="text-xs text-softGold uppercase tracking-widest font-semibold">Komitmen Transparansi Nasional 2026</p>
+          </div>
+        </div>
+
+        <!-- Misi Cards -->
+        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <div class="bg-navy/70 p-6 rounded-xl border border-white/10 hover:border-gold/50 transition-colors space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-gold/20 text-gold flex items-center justify-center font-bold">01</div>
+            <h4 class="font-heading font-semibold text-base text-white">Jasa Asurans Objektif & Independen</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Memberikan jasa audit dan asurans secara objektif, independen, serta patuh penuh pada Standar Profesional Akuntan Publik (SPAP) dan Kode Etik Profesi.
+            </p>
+          </div>
+
+          <div class="bg-navy/70 p-6 rounded-xl border border-white/10 hover:border-gold/50 transition-colors space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-gold/20 text-gold flex items-center justify-center font-bold">02</div>
+            <h4 class="font-heading font-semibold text-base text-white">Layanan Non-Asurans Bernilai Tambah</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Menyediakan jasa non-asurans yang relevan, akurat, dan bernilai tambah untuk membantu penguatan tata kelola serta pelaporan keuangan klien.
+            </p>
+          </div>
+
+          <div class="bg-navy/70 p-6 rounded-xl border border-white/10 hover:border-gold/50 transition-colors space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-gold/20 text-gold flex items-center justify-center font-bold">03</div>
+            <h4 class="font-heading font-semibold text-base text-white">Adaptasi Regulasi & Teknologi Audit</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Meningkatkan kapabilitas teknis dan keahlian auditor secara berkala melalui adaptasi regulasi terkini serta penerapan teknologi audit modern.
+            </p>
+          </div>
+
+          <div class="bg-navy/70 p-6 rounded-xl border border-white/10 hover:border-gold/50 transition-colors space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-gold/20 text-gold flex items-center justify-center font-bold">04</div>
+            <h4 class="font-heading font-semibold text-base text-white">Kemitraan Profesional Berkelanjutan</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Membangun relasi profesional jangka panjang bersama klien dan pemangku kepentingan berlandaskan transparansi, komunikasi terbuka, dan etika bisnis.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="layanan" class="py-20 lg:py-28 bg-offWhite text-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
+        <span class="text-xs uppercase tracking-widest text-navy font-semibold">Ruang Lingkup Jasa</span>
+        <h2 class="text-3xl sm:text-4xl font-heading font-bold text-navy">Layanan Jasa Profesional Kami</h2>
+        <div class="w-20 h-0.5 bg-gold mx-auto mt-3"></div>
+        <p class="text-sm text-gray-600">
+          Solusi komprehensif yang dirancang untuk memperkuat keandalan informasi keuangan serta kepatuhan regulasi bisnis Anda.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Service Category 1: Jasa Asurans -->
+        <div class="spotlight-card bg-white p-8 sm:p-10 rounded-2xl border-2 border-gold/40 shadow-lg space-y-6">
+          <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+            <div class="w-14 h-14 rounded-xl bg-darkNavy text-gold flex items-center justify-center text-2xl shadow-md">
+              <i class="fa-solid fa-file-shield"></i>
+            </div>
+            <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-gold/15 text-navy rounded-full">
+              Pilar Asurans
+            </span>
+          </div>
+
+          <div>
+            <h3 class="font-heading font-bold text-2xl text-navy">Jasa Asurans</h3>
+            <p class="text-xs uppercase tracking-wider text-gold font-semibold mt-0.5">Assurance Services</p>
+          </div>
+
+          <p class="text-sm text-gray-700 leading-relaxed">
+            Mencakup audit umum atas laporan keuangan historis, review laporan keuangan, serta audit kepatuhan. Melalui penerapan metodologi berbasis risiko yang cermat, perikatan audit kami dirancang untuk memberikan keyakinan memadai (<em>reasonable assurance</em>) dan opini independen yang memperkuat keandalan laporan keuangan di mata pemegang saham, perbankan, maupun regulator.
+          </p>
+
+          <div class="space-y-3 pt-2">
+            <div class="flex items-start space-x-3 text-xs text-gray-700">
+              <i class="fa-solid fa-circle-check text-gold mt-0.5 text-sm"></i>
+              <span><strong>Audit Umum Laporan Keuangan Historis:</strong> Opini independen atas kewajaran penyajian laporan sesuai SAK.</span>
+            </div>
+            <div class="flex items-start space-x-3 text-xs text-gray-700">
+              <i class="fa-solid fa-circle-check text-gold mt-0.5 text-sm"></i>
+              <span><strong>Review Laporan Keuangan:</strong> Memberikan keyakinan terbatas atas kepatuhan pelaporan keuangan.</span>
+            </div>
+            <div class="flex items-start space-x-3 text-xs text-gray-700">
+              <i class="fa-solid fa-circle-check text-gold mt-0.5 text-sm"></i>
+              <span><strong>Audit Kepatuhan:</strong> Evaluasi kepatuhan entitas terhadap perundang-undangan dan regulasi industri.</span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-100">
+            <a href="#kontak" class="text-xs font-bold text-navy hover:text-gold uppercase tracking-wider inline-flex items-center space-x-2">
+              <span>Konsultasikan Kebutuhan Audit</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Category 2: Jasa Non-Asurans -->
+        <div class="spotlight-card bg-white p-8 sm:p-10 rounded-2xl border-2 border-gray-200 hover:border-gold/60 shadow-lg space-y-6">
+          <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+            <div class="w-14 h-14 rounded-xl bg-navy text-gold flex items-center justify-center text-2xl shadow-md">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-navy/10 text-navy rounded-full">
+              Pilar Non-Asurans
+            </span>
+          </div>
+
+          <div>
+            <h3 class="font-heading font-bold text-2xl text-navy">Jasa Non-Asurans</h3>
+            <p class="text-xs uppercase tracking-wider text-gold font-semibold mt-0.5">Non-Assurance Services</p>
+          </div>
+
+          <p class="text-sm text-gray-700 leading-relaxed">
+            Ruang lingkup ini mencakup jasa kompilasi laporan keuangan, pelaksanaan prosedur yang disepakati (<em>Agreed-Upon Procedures / AUP</em>), hingga pendampingan teknis akuntansi. Dengan pendekatan kerja yang objektif, berintegritas, dan terjaga kerahasiaannya, kami memastikan setiap perikatan memberikan wawasan yang bernilai tambah guna mendukung pertumbuhan serta transparansi bisnis klien secara berkelanjutan.
+          </p>
+
+          <div class="space-y-3 pt-2">
+            <div class="flex items-start space-x-3 text-xs text-gray-700">
+              <i class="fa-solid fa-circle-check text-gold mt-0.5 text-sm"></i>
+              <span><strong>Kompilasi Laporan Keuangan:</strong> Penyusunan dan pengelolaan informasi akuntansi terstandarisasi.</span>
+            </div>
+            <div class="flex items-start space-x-3 text-xs text-gray-700">
+              <i class="fa-solid fa-circle-check text-gold mt-0.5 text-sm"></i>
+              <span><strong>Agreed-Upon Procedures (AUP):</strong> Penerapan prosedur audit khusus berdasarkan kesepakatan bersama.</span>
+            </div>
+            <div class="flex items-start space-x-3 text-xs text-gray-700">
+              <i class="fa-solid fa-circle-check text-gold mt-0.5 text-sm"></i>
+              <span><strong>Pendampingan Teknis Akuntansi:</strong> Konsultansi tata kelola dan sistem informasi akuntansi internal.</span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-100">
+            <a href="#kontak" class="text-xs font-bold text-navy hover:text-gold uppercase tracking-wider inline-flex items-center space-x-2">
+              <span>Konsultasikan Jasa Akuntansi</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="struktur" class="py-20 lg:py-28 bg-darkNavy text-white relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Title -->
+      <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
+        <span class="text-xs uppercase tracking-widest text-softGold font-semibold">Tata Kelola Firma</span>
+        <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white">Struktur Organisasi Resmi</h2>
+        <div class="w-20 h-0.5 bg-gold mx-auto mt-3"></div>
+        <p class="text-sm text-gray-300">
+          Struktur kepemimpinan dan hierarki auditor profesional KAP Fauzi & Rekan sesuai lembar organisasi resmi firma (Slide 5).
+        </p>
+      </div>
+
+      <!-- Single Sheet Tree Hierarchy -->
+      <div class="max-w-4xl mx-auto relative flex flex-col items-center">
+        
+        <!-- TIER 1: Managing Partner / Pimpinan KAP -->
+        <div class="w-full max-w-sm mb-6 relative group">
+          <div class="bg-navy p-6 rounded-2xl border-2 border-gold shadow-2xl text-center space-y-4 relative overflow-hidden transition-all duration-300 group-hover:shadow-gold/30">
+            
+            <div class="inline-block px-3 py-1 rounded-full bg-gold text-darkNavy text-[10px] uppercase font-bold tracking-wider">
+              Pimpinan Tertinggi KAP
+            </div>
+
+            <!-- Official Portrait of Fauzi Adani with safe fallback -->
+            <div class="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full p-1 bg-gradient-to-tr from-gold via-softGold to-yellow-100 shadow-xl group-hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="triggerPimpinanPhotoUpload()" title="Klik untuk memuat foto langsung">
+              <div class="w-full h-full rounded-full overflow-hidden bg-darkNavy border-2 border-white relative flex items-center justify-center">
+                <img src="Company Profile KAP Fauzi (4).jpg" 
+                     alt="Fauzi Adani, S.E., Ak., CA., CPA" 
+                     class="pimpinan-img-target w-full h-full object-cover object-top"
+                     onerror="if(window.handlePimpinanPhotoFallback){handlePimpinanPhotoFallback(this);}else{this.classList.add('hidden');var fb=this.parentElement?this.parentElement.querySelector('.pimpinan-svg-fallback'):null;if(fb){fb.classList.remove('hidden');fb.classList.add('flex');}}">
+                
+                <!-- Fallback Vector Silhouette -->
+                <div class="pimpinan-svg-fallback hidden w-full h-full rounded-full bg-[#991b1b] flex flex-col items-center justify-center relative overflow-hidden">
+                  <div class="w-full h-full flex flex-col items-center justify-end pb-0">
+                    <div class="w-12 h-12 rounded-full bg-[#E5B58D] mb-1 relative flex items-center justify-center">
+                      <div class="w-14 h-5 bg-[#1F2937] rounded-t-full absolute -top-1"></div>
+                    </div>
+                    <div class="w-20 h-10 bg-[#0F172A] rounded-t-2xl relative flex justify-center">
+                      <div class="w-5 h-8 bg-white clip-v relative flex justify-center">
+                        <div class="w-2 h-7 bg-black mt-1"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CPA Certified Badge -->
+              <span class="absolute -bottom-1 -right-1 bg-gold text-darkNavy text-[11px] font-bold px-2 py-0.5 rounded-full border border-darkNavy shadow">
+                CPA
+              </span>
+            </div>
+
+            <div>
+              <h3 class="font-heading font-bold text-lg text-white">Fauzi Adani, S.E., Ak., CA., CPA</h3>
+              <p class="text-xs uppercase font-bold text-softGold tracking-wider mt-0.5">Managing Partner</p>
+            </div>
+
+            <p class="text-xs text-gray-300 leading-relaxed border-t border-white/10 pt-3">
+              Penanggung jawab seluruh opini perikatan audit, kepatuhan teknis SPAP, serta arah kebijakan strategis firma.
+            </p>
+          </div>
+
+          <!-- Vertical Connector Line to Tier 2 -->
+          <div class="w-0.5 h-8 bg-gold mx-auto"></div>
+        </div>
+
+        <!-- TIER 2: Audit Manager -->
+        <div class="w-full max-w-sm mb-6 relative">
+          <div class="bg-navy/90 p-5 rounded-xl border border-gold/50 shadow-xl text-center space-y-3 hover:border-gold transition-colors group">
+            <!-- Manager Portrait Card with Direct Click-to-Upload -->
+            <div class="relative w-20 h-20 mx-auto rounded-full p-0.5 bg-gradient-to-tr from-gold via-softGold to-yellow-100 shadow-lg cursor-pointer transition-transform group-hover:scale-105" onclick="triggerMemberPhotoUpload('sandrina')" title="Klik untuk mengunggah atau mengganti foto Sandrina Salwa">
+              <div class="w-full h-full rounded-full overflow-hidden bg-darkNavy border-2 border-white/20 relative flex items-center justify-center">
+                <img src="sandrina-salwa.jpg" 
+                     alt="Sandrina Salwa S., S.E., Ak., CA." 
+                     class="sandrina-img-target w-full h-full object-cover object-top"
+                     onerror="this.classList.add('hidden'); var fb=this.parentElement.querySelector('.sandrina-fallback'); if(fb){fb.classList.remove('hidden'); fb.classList.add('flex');}">
+                <!-- Fallback Avatar -->
+                <div class="sandrina-fallback hidden w-full h-full rounded-full bg-[#1e293b] flex items-center justify-center text-gold">
+                  <i class="fa-solid fa-user-tie text-2xl"></i>
+                </div>
+              </div>
+              <div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-gold text-darkNavy text-[11px] flex items-center justify-center font-bold shadow">
+                <i class="fa-solid fa-camera"></i>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="font-heading font-bold text-base text-white">Sandrina Salwa S., S.E., Ak., CA.</h4>
+              <p class="text-xs uppercase font-semibold text-softGold tracking-wider">Audit Manager</p>
+            </div>
+
+            <p class="text-xs text-gray-300 leading-relaxed border-t border-white/10 pt-2">
+              Koordinator operasional perikatan, reviu kertas kerja audit (KKP), supervisi tim, dan manajemen mutu kerja.
+            </p>
+          </div>
+
+          <!-- Connector to Senior Auditors -->
+          <div class="w-0.5 h-8 bg-gold mx-auto"></div>
+        </div>
+
+        <!-- TIER 3: Auditor Senior (2 Rekan) -->
+        <div class="w-full mb-6 relative">
+          <!-- Horizontal Branch Line (Desktop) -->
+          <div class="hidden sm:block w-3/4 max-w-md h-0.5 bg-gold/60 mx-auto mb-4"></div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            
+            <!-- Bunaya Dewi K. Card with Image and Direct Upload Capability -->
+            <div class="bg-navy/80 p-5 rounded-xl border border-white/15 hover:border-gold/60 transition-all text-center space-y-3 group">
+              <div class="relative w-16 h-16 mx-auto rounded-full p-0.5 bg-gradient-to-tr from-gold/60 via-softGold to-yellow-100 shadow-md cursor-pointer transition-transform group-hover:scale-105" onclick="triggerMemberPhotoUpload('bunaya')" title="Klik untuk mengunggah atau mengganti foto Bunaya Dewi">
+                <div class="w-full h-full rounded-full overflow-hidden bg-darkNavy border border-white/20 relative flex items-center justify-center">
+                  <img src="bunaya-dewi.jpg" 
+                       alt="Bunaya Dewi K., S.E., Ak." 
+                       class="bunaya-img-target w-full h-full object-cover object-top"
+                       onerror="this.classList.add('hidden'); var fb=this.parentElement.querySelector('.bunaya-fallback'); if(fb){fb.classList.remove('hidden'); fb.classList.add('flex');}">
+                  <!-- Fallback Avatar -->
+                  <div class="bunaya-fallback hidden w-full h-full rounded-full bg-[#1e3a8a] flex items-center justify-center text-gold">
+                    <i class="fa-solid fa-user-tie text-xl"></i>
+                  </div>
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gold text-darkNavy text-[10px] flex items-center justify-center font-bold shadow">
+                  <i class="fa-solid fa-camera"></i>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-heading font-bold text-sm text-white">Bunaya Dewi K., S.E., Ak.</h4>
+                <p class="text-[11px] uppercase font-semibold text-softGold tracking-wider mt-0.5">Auditor Senior</p>
+              </div>
+
+              <p class="text-xs text-gray-400 leading-relaxed border-t border-white/10 pt-2">
+                Pengujian substantif analitis, reviu kepatuhan akuntansi, dan evaluasi pengendalian internal entitas.
+              </p>
+            </div>
+
+            <!-- Asya Safira R. Card with Image and Direct Upload Capability -->
+            <div class="bg-navy/80 p-5 rounded-xl border border-white/15 hover:border-gold/60 transition-all text-center space-y-3 group">
+              <div class="relative w-16 h-16 mx-auto rounded-full p-0.5 bg-gradient-to-tr from-gold/60 via-softGold to-yellow-100 shadow-md cursor-pointer transition-transform group-hover:scale-105" onclick="triggerMemberPhotoUpload('asya')" title="Klik untuk mengunggah atau mengganti foto Asya Safira">
+                <div class="w-full h-full rounded-full overflow-hidden bg-darkNavy border border-white/20 relative flex items-center justify-center">
+                  <img src="asya-safira.jpg" 
+                       alt="Asya Safira R., S.E., Ak." 
+                       class="asya-img-target w-full h-full object-cover object-top"
+                       onerror="this.classList.add('hidden'); var fb=this.parentElement.querySelector('.asya-fallback'); if(fb){fb.classList.remove('hidden'); fb.classList.add('flex');}">
+                  <!-- Fallback Avatar -->
+                  <div class="asya-fallback hidden w-full h-full rounded-full bg-[#1e3a8a] flex items-center justify-center text-gold">
+                    <i class="fa-solid fa-user-tie text-xl"></i>
+                  </div>
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gold text-darkNavy text-[10px] flex items-center justify-center font-bold shadow">
+                  <i class="fa-solid fa-camera"></i>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-heading font-bold text-sm text-white">Asya Safira R., S.E., Ak.</h4>
+                <p class="text-[11px] uppercase font-semibold text-softGold tracking-wider mt-0.5">Auditor Senior</p>
+              </div>
+
+              <p class="text-xs text-gray-400 leading-relaxed border-t border-white/10 pt-2">
+                Penyusunan prosedur audit berbasis risiko, pengujian saldo material, dan rekapitulasi temuan kepatuhan.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Connector to Junior Auditors -->
+          <div class="w-0.5 h-8 bg-gold mx-auto mt-4"></div>
+        </div>
+
+        <!-- TIER 4: Auditor Junior (2 Rekan) -->
+        <div class="w-full relative">
+          <!-- Horizontal Branch Line (Desktop) -->
+          <div class="hidden sm:block w-3/4 max-w-md h-0.5 bg-gold/60 mx-auto mb-4"></div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            
+            <!-- Tiara Ulung P. Card with Image and Direct Upload Capability -->
+            <div class="bg-navy/70 p-5 rounded-xl border border-white/10 hover:border-gold/40 transition-all text-center space-y-2 group">
+              <div class="relative w-14 h-14 mx-auto rounded-full p-0.5 bg-gradient-to-tr from-gold/50 via-softGold to-yellow-100 shadow-md cursor-pointer transition-transform group-hover:scale-105" onclick="triggerMemberPhotoUpload('tiara')" title="Klik untuk mengunggah atau mengganti foto Tiara Ulung">
+                <div class="w-full h-full rounded-full overflow-hidden bg-darkNavy border border-white/20 relative flex items-center justify-center">
+                  <img src="tiara-ulung.jpg" 
+                       alt="Tiara Ulung P., S.E." 
+                       class="tiara-img-target w-full h-full object-cover object-top"
+                       onerror="this.classList.add('hidden'); var fb=this.parentElement.querySelector('.tiara-fallback'); if(fb){fb.classList.remove('hidden'); fb.classList.add('flex');}">
+                  <!-- Fallback Avatar -->
+                  <div class="tiara-fallback hidden w-full h-full rounded-full bg-[#334155] flex items-center justify-center text-gray-300">
+                    <i class="fa-solid fa-user text-lg"></i>
+                  </div>
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gold text-darkNavy text-[9px] flex items-center justify-center font-bold shadow">
+                  <i class="fa-solid fa-camera"></i>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-heading font-bold text-sm text-white">Tiara Ulung P., S.E.</h4>
+                <p class="text-[11px] uppercase font-semibold text-softGold tracking-wider mt-0.5">Auditor Junior</p>
+              </div>
+              <p class="text-xs text-gray-400">Pelaksanaan vouching dokumen transaksi, konfirmasi piutang/utang, dan observasi fisik aset.</p>
+            </div>
+
+            <!-- Hamba Ikhsan A. Card with Image and Direct Upload Capability -->
+            <div class="bg-navy/70 p-5 rounded-xl border border-white/10 hover:border-gold/40 transition-all text-center space-y-2 group">
+              <div class="relative w-14 h-14 mx-auto rounded-full p-0.5 bg-gradient-to-tr from-gold/50 via-softGold to-yellow-100 shadow-md cursor-pointer transition-transform group-hover:scale-105" onclick="triggerMemberPhotoUpload('hamba')" title="Klik untuk mengunggah atau mengganti foto Hamba Ikhsan">
+                <div class="w-full h-full rounded-full overflow-hidden bg-darkNavy border border-white/20 relative flex items-center justify-center">
+                  <img src="hamba-ikhsan.jpg" 
+                       alt="Hamba Ikhsan A., S.E." 
+                       class="hamba-img-target w-full h-full object-cover object-top"
+                       onerror="this.classList.add('hidden'); var fb=this.parentElement.querySelector('.hamba-fallback'); if(fb){fb.classList.remove('hidden'); fb.classList.add('flex');}">
+                  <!-- Fallback Avatar -->
+                  <div class="hamba-fallback hidden w-full h-full rounded-full bg-[#334155] flex items-center justify-center text-gray-300">
+                    <i class="fa-solid fa-user text-lg"></i>
+                  </div>
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gold text-darkNavy text-[9px] flex items-center justify-center font-bold shadow">
+                  <i class="fa-solid fa-camera"></i>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-heading font-bold text-sm text-white">Hamba Ikhsan A., S.E.</h4>
+                <p class="text-[11px] uppercase font-semibold text-softGold tracking-wider mt-0.5">Auditor Junior</p>
+              </div>
+              <p class="text-xs text-gray-400">Penyusunan kertas kerja audit awal, rekapitulasi data keuangan, dan verifikasi administratif.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="keunggulan" class="py-20 bg-navy text-white border-t border-gold/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
+        <span class="text-xs uppercase tracking-widest text-softGold font-semibold">Nilai Pembeda Kami</span>
+        <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white">Mengapa Memilih KAP Fauzi & Rekan?</h2>
+        <div class="w-20 h-0.5 bg-gold mx-auto mt-3"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="bg-darkNavy/70 p-6 rounded-xl border border-gold/30 hover:border-gold transition duration-300 space-y-3 text-center sm:text-left">
+          <div class="w-12 h-12 rounded-lg bg-gold/15 text-gold flex items-center justify-center text-xl mx-auto sm:mx-0">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-white">Profesional</h3>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Didukung oleh tim akuntan terverifikasi dengan pembagian tanggung jawab yang terstruktur dan terstandarisasi.
+          </p>
+        </div>
+
+        <div class="bg-darkNavy/70 p-6 rounded-xl border border-gold/30 hover:border-gold transition duration-300 space-y-3 text-center sm:text-left">
+          <div class="w-12 h-12 rounded-lg bg-gold/15 text-gold flex items-center justify-center text-xl mx-auto sm:mx-0">
+            <i class="fa-solid fa-scale-unbalanced-flip"></i>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-white">Berintegritas</h3>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Mengutamakan kejujuran, independensi sikap mental, objektivitas, dan tanggung jawab etika profesi yang tinggi.
+          </p>
+        </div>
+
+        <div class="bg-darkNavy/70 p-6 rounded-xl border border-gold/30 hover:border-gold transition duration-300 space-y-3 text-center sm:text-left">
+          <div class="w-12 h-12 rounded-lg bg-gold/15 text-gold flex items-center justify-center text-xl mx-auto sm:mx-0">
+            <i class="fa-solid fa-user-lock"></i>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-white">Terpercaya</h3>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Menjaga kerahasiaan seluruh dokumen dan informasi bisnis klien secara aman dan berkelanjutan.
+          </p>
+        </div>
+
+        <div class="bg-darkNavy/70 p-6 rounded-xl border border-gold/30 hover:border-gold transition duration-300 space-y-3 text-center sm:text-left">
+          <div class="w-12 h-12 rounded-lg bg-gold/15 text-gold flex items-center justify-center text-xl mx-auto sm:mx-0">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-white">Berorientasi Mutu</h3>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Mengutamakan ketelitian, metodologi berbasis risiko, serta kepatuhan menyeluruh terhadap regulasi nasional.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-20 lg:py-28 bg-offWhite text-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
+        <span class="text-xs uppercase tracking-widest text-navy font-semibold">Metodologi & Alur Kerja</span>
+        <h2 class="text-3xl sm:text-4xl font-heading font-bold text-navy">Alur Layanan & Kemitraan Klien</h2>
+        <div class="w-20 h-0.5 bg-gold mx-auto mt-3"></div>
+        <p class="text-sm text-gray-600">
+          Proses kerja yang sistematis dan transparan mulai dari tahap awal penelaahan hingga penyampaian laporan resmi.
+        </p>
+      </div>
+
+      <!-- 4-Step Timeline -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+        
+        <!-- Step 1 -->
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-3 relative hover:border-gold/60 transition-all">
+          <div class="text-3xl font-heading font-black text-gold">01</div>
+          <h4 class="font-heading font-bold text-base text-navy">Introduction Call</h4>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            Konsultasi awal untuk mendalami profil bisnis, kompleksitas transaksi, serta memetakan kebutuhan audit atau jasa akuntansi klien.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-3 relative hover:border-gold/60 transition-all">
+          <div class="text-3xl font-heading font-black text-gold">02</div>
+          <h4 class="font-heading font-bold text-base text-navy">Proposal & Agreement</h4>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            Penyusunan surat penawaran (engagement proposal), penentuan ruang lingkup perikatan kerja, jadwal pelaksanaan, dan penandatanganan kontrak.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-3 relative hover:border-gold/60 transition-all">
+          <div class="text-3xl font-heading font-black text-gold">03</div>
+          <h4 class="font-heading font-bold text-base text-navy">Kickoff & Info Gathering</h4>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            Rapat koordinasi perdana bersama manajemen, pengumpulan data laporan keuangan, bukti transaksi, dan penelaahan sistem pengendalian internal.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="bg-white p-6 rounded-xl border border-gold/60 shadow-md space-y-3 relative bg-gradient-to-b from-white to-gold/5">
+          <div class="text-3xl font-heading font-black text-gold">04</div>
+          <h4 class="font-heading font-bold text-base text-navy">Penyampaian Hasil</h4>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            Pelaksanaan prosedur audit berbasis risiko, pembahasan temuan bersama manajemen (exit meeting), dan penyerahan Laporan Auditor Independen.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-16 bg-navy text-white relative overflow-hidden border-y border-gold/30">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
+      <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white leading-snug">
+        Bangun Kepercayaan Melalui Informasi Keuangan yang Andal.
+      </h2>
+      <p class="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto font-light leading-relaxed">
+        Diskusikan kebutuhan audit, asurans, dan kompilasi akuntansi Anda bersama tim profesional KAP Fauzi & Rekan. Kami siap menjadi mitra strategis pertumbuhan bisnis Anda.
+      </p>
+      <div class="pt-2">
+        <a href="#kontak" class="shimmer-btn inline-flex items-center space-x-2 bg-gold hover:bg-softGold text-darkNavy font-bold px-8 py-3.5 rounded-lg text-sm uppercase tracking-wider shadow-lg hover:shadow-gold/30 transition duration-300">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span>Hubungi Tim Kami</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontak" class="py-20 lg:py-28 bg-offWhite text-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
+        <span class="text-xs uppercase tracking-widest text-navy font-semibold">Saluran Komunikasi</span>
+        <h2 class="text-3xl sm:text-4xl font-heading font-bold text-navy">Hubungi KAP Fauzi & Rekan</h2>
+        <div class="w-20 h-0.5 bg-gold mx-auto mt-3"></div>
+        <p class="text-sm text-gray-600">
+          Silakan hubungi kami untuk konsultasi, permohonan proposal perikatan audit, atau pertanyaan terkait layanan profesional kami.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Contact Information Cards & Map -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
+            <h3 class="font-heading font-bold text-xl text-navy">Informasi Kontak Kantor</h3>
+            
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 rounded-lg bg-navy text-gold flex items-center justify-center flex-shrink-0 text-base">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider text-gray-500 font-semibold">Domisili Kantor</p>
+                <p class="text-sm font-semibold text-navy mt-0.5">Depok, Jawa Barat, Indonesia</p>
+                <p class="text-xs text-gray-600 mt-0.5">Melayani perikatan audit entitas bisnis di seluruh Indonesia.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 rounded-lg bg-navy text-gold flex items-center justify-center flex-shrink-0 text-base">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider text-gray-500 font-semibold">Email Resmi</p>
+                <a href="mailto:kapfauzidanrekan@gmail.com" class="text-sm font-semibold text-navy hover:text-gold transition mt-0.5 block">
+                  kapfauzidanrekan@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 rounded-lg bg-navy text-gold flex items-center justify-center flex-shrink-0 text-base">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider text-gray-500 font-semibold">Telepon & WhatsApp</p>
+                <a href="https://wa.me/6289529631082" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-navy hover:text-gold transition mt-0.5 block">
+                  +62 895-2963-1082
+                </a>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 rounded-lg bg-navy text-gold flex items-center justify-center flex-shrink-0 text-base">
+                <i class="fa-regular fa-clock"></i>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider text-gray-500 font-semibold">Jam Operasional</p>
+                <p class="text-sm font-semibold text-navy mt-0.5">Senin – Jumat: 08.30 – 17.00 WIB</p>
+                <p class="text-xs text-gray-500">Sabtu & Minggu: Sesuai Perjanjian Khusus</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Location Card -->
+          <div class="bg-navy p-6 rounded-xl border border-gold/30 text-white space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-softGold">Wilayah Operasional Utama</span>
+              <span class="text-xs bg-darkNavy px-2.5 py-1 rounded text-gray-300">JABODETABEK & Nasional</span>
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Tim auditor kami berbasis di Depok dan siap melakukan penugasan lapangan (<em>fieldwork audit</em>) secara langsung ke kantor entitas klien di berbagai provinsi.
+            </p>
+            <div class="pt-2">
+              <a href="https://wa.me/6289529631082" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-xs font-bold text-gold hover:text-white uppercase tracking-wider">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Hubungi via WhatsApp Langsung</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Contact Form -->
+        <div class="lg:col-span-7">
+          <div class="bg-white p-8 sm:p-10 rounded-xl border border-gray-200 shadow-md">
+            <h3 class="font-heading font-bold text-xl text-navy mb-6">Kirim Pesan & Permohonan Konsultasi</h3>
+            
+            <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-4">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5" for="nama">Nama Lengkap *</label>
+                  <input type="text" id="nama" required placeholder="Contoh: Budi Santoso" class="w-full text-sm px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold bg-offWhite/50">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5" for="email">Alamat Email *</label>
+                  <input type="email" id="email" required placeholder="nama@perusahaan.com" class="w-full text-sm px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold bg-offWhite/50">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5" for="telepon">Nomor Telepon / WA *</label>
+                  <input type="tel" id="telepon" required placeholder="08123456789" class="w-full text-sm px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold bg-offWhite/50">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5" for="subjek">Jenis Layanan Yang Dibutuhkan *</label>
+                  <select id="subjek" required class="w-full text-sm px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold bg-offWhite/50">
+                    <option value="" disabled selected>Pilih Layanan...</option>
+                    <option value="Audit Umum Laporan Keuangan">Audit Umum Laporan Keuangan (Asurans)</option>
+                    <option value="Review Laporan Keuangan">Review Laporan Keuangan</option>
+                    <option value="Kompilasi Laporan Keuangan">Kompilasi Laporan Keuangan</option>
+                    <option value="Agreed-Upon Procedures (AUP)">Agreed-Upon Procedures (AUP)</option>
+                    <option value="Pendampingan Teknis Akuntansi">Pendampingan Teknis Akuntansi</option>
+                    <option value="Konsultasi Lainnya">Konsultasi Lainnya</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5" for="pesan">Deskripsi Kebutuhan / Permasalahan *</label>
+                <textarea id="pesan" rows="4" required placeholder="Tuliskan secara singkat profil entitas Anda serta periode laporan keuangan yang ingin diaudit/dikonsultasikan..." class="w-full text-sm px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold bg-offWhite/50"></textarea>
+              </div>
+
+              <button type="submit" class="shimmer-btn w-full py-3.5 bg-gold hover:bg-softGold text-darkNavy font-bold rounded-lg text-xs uppercase tracking-wider shadow-md transition duration-300 flex items-center justify-center space-x-2">
+                <i class="fa-regular fa-paper-plane"></i>
+                <span>Kirim Permohonan Konsultasi</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="bg-darkNavy text-white border-t border-gold/20 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+        
+        <!-- Left Column: Official Logotype -->
+        <div class="md:col-span-5 space-y-4">
+          <div class="flex items-center space-x-3.5">
+            <!-- White Backplate for Footer Emblem -->
+            <div class="w-12 h-12 rounded-xl bg-white border border-gold/60 p-1 flex items-center justify-center shadow-md flex-shrink-0">
+              <svg class="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="200" cy="200" r="190" fill="#FFFFFF"/>
+                <path d="M200 40 C195 70 200 95 200 120 C200 95 205 70 200 40 Z" fill="#C9A227"/>
+                <path d="M200 80 C175 60 150 75 160 100 C175 105 190 95 200 80 Z" fill="#D8BC63"/>
+                <path d="M200 80 C225 60 250 75 240 100 C225 105 210 95 200 80 Z" fill="#D8BC63"/>
+                <path d="M170 145 L190 130 L190 210 L170 210 Z" fill="#0B1F3A"/>
+                <path d="M200 120 L220 105 L220 210 L200 210 Z" fill="#C9A227"/>
+                <path d="M230 100 L250 85 L250 210 L230 210 Z" fill="#0B1F3A"/>
+                <path d="M165 205 Q220 170 290 95 L285 125 L310 70 L255 80 L275 92 Q215 160 165 205 Z" fill="#C9A227"/>
+                <path d="M60 150 L160 150 L160 185 L105 185 L105 205 L150 205 L135 245 L105 245 L105 290 L60 290 Z" fill="#061426"/>
+                <path d="M135 245 L175 285 L200 260 L160 220 Z" fill="#0B1F3A"/>
+                <path d="M175 285 L190 300 L205 285 L190 270 Z" fill="#C9A227"/>
+                <path d="M190 300 L205 315 L220 300 L205 285 Z" fill="#C9A227"/>
+                <path d="M205 315 L220 330 L235 315 L220 300 Z" fill="#C9A227"/>
+                <path d="M200 260 L240 220 L275 245 L255 270 L220 240 Z" fill="#C9A227"/>
+                <path d="M260 150 L340 150 C370 150 380 180 370 210 C360 235 340 245 320 250 L375 320 L330 320 L285 255 L285 320 L260 320 Z" fill="#C9A227"/>
+                <path d="M285 175 L325 175 C340 175 345 190 340 205 C335 220 325 225 310 225 L285 225 Z" fill="#FFFFFF"/>
+                <path d="M100 280 C120 330 170 350 220 345 C270 340 310 310 315 275 C295 320 240 340 190 330 C150 320 115 295 100 280 Z" fill="#0B1F3A"/>
+              </svg>
+            </div>
+            <div>
+              <span class="font-heading font-bold text-lg tracking-wider text-white">FAUZI & REKAN</span>
+              <p class="text-[10px] tracking-[0.2em] uppercase text-softGold font-semibold">Kantor Akuntan Publik</p>
+            </div>
+          </div>
+
+          <p class="text-xs text-gray-300 leading-relaxed max-w-sm">
+            Firma akuntan publik terpercaya berlandaskan izin Kementerian Keuangan RI dan keanggotaan resmi IAPI, menghadirkan jasa atestasi dan non-asurans berkualitas tinggi.
+          </p>
+
+          <div class="flex items-center space-x-3 pt-1">
+            <a href="#" class="w-8 h-8 rounded-full bg-navy border border-gold/30 hover:border-gold text-gold flex items-center justify-center text-xs transition" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+            <a href="mailto:kapfauzidanrekan@gmail.com" class="w-8 h-8 rounded-full bg-navy border border-gold/30 hover:border-gold text-gold flex items-center justify-center text-xs transition" aria-label="Email">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="https://wa.me/6289529631082" class="w-8 h-8 rounded-full bg-navy border border-gold/30 hover:border-gold text-gold flex items-center justify-center text-xs transition" aria-label="WhatsApp">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="md:col-span-3 space-y-3">
+          <p class="text-xs uppercase tracking-wider font-bold text-softGold">Navigasi Utama</p>
+          <ul class="space-y-2 text-xs text-gray-300">
+            <li><a href="#home" class="hover:text-gold transition">Beranda</a></li>
+            <li><a href="#tentang" class="hover:text-gold transition">Tentang Kami & Sejarah</a></li>
+            <li><a href="#layanan" class="hover:text-gold transition">Layanan Asurans & Non-Asurans</a></li>
+            <li><a href="#struktur" class="hover:text-gold transition">Struktur Organisasi</a></li>
+            <li><a href="#keunggulan" class="hover:text-gold transition">Keunggulan Firma</a></li>
+            <li><a href="#kontak" class="hover:text-gold transition">Kontak & Lokasi</a></li>
+          </ul>
+        </div>
+
+        <!-- Service Summary -->
+        <div class="md:col-span-4 space-y-3">
+          <p class="text-xs uppercase tracking-wider font-bold text-softGold">Kantor & Komunikasi</p>
+          <div class="space-y-2 text-xs text-gray-300 leading-relaxed">
+            <p><strong class="text-white">Lokasi:</strong> Depok, Jawa Barat, Indonesia</p>
+            <p><strong class="text-white">Email:</strong> kapfauzidanrekan@gmail.com</p>
+            <p><strong class="text-white">Telepon/WA:</strong> +62 895-2963-1082</p>
+            <p><strong class="text-white">Standar:</strong> SPAP & SAK Terkini (Risk-Based Audit)</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Copyright Notice -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
+        <p>© 2026 KAP Fauzi & Rekan. All Rights Reserved.</p>
+        <div class="flex items-center space-x-4">
+          <a href="#" class="hover:text-gold transition">Kebijakan Privasi</a>
+          <span class="text-white/20">•</span>
+          <a href="#" class="hover:text-gold transition">Kode Etik Profesi</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <a href="https://wa.me/6289529631082" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center text-2xl shadow-2xl hover:scale-110 transition-transform duration-300" title="Hubungi kami via WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+    <span class="absolute w-full h-full rounded-full bg-[#25D366] opacity-30 animate-ping pointer-events-none"></span>
+  </a>
+
+  <div id="consultationModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-navy border border-gold/40 rounded-2xl max-w-lg w-full p-6 sm:p-8 text-white space-y-5 shadow-2xl relative">
+      
+      <button onclick="closeConsultationModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2" aria-label="Tutup Modal">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-white p-1 border border-gold flex items-center justify-center flex-shrink-0">
+          <svg class="w-full h-full" viewBox="0 0 400 400" fill="none">
+            <path d="M170 145 L190 130 L190 210 L170 210 Z" fill="#0B1F3A"/>
+            <path d="M200 120 L220 105 L220 210 L200 210 Z" fill="#C9A227"/>
+            <path d="M230 100 L250 85 L250 210 L230 210 Z" fill="#0B1F3A"/>
+            <path d="M60 150 L160 150 L160 185 L105 185 L105 205 L150 205 L135 245 L105 245 L105 290 L60 290 Z" fill="#061426"/>
+            <path d="M260 150 L340 150 C370 150 380 180 370 210 C360 235 340 245 320 250 L375 320 L330 320 L285 255 L285 320 L260 320 Z" fill="#C9A227"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-heading font-bold text-lg text-white">Jadwalkan Konsultasi</h3>
+          <p class="text-xs text-softGold">KAP Fauzi & Rekan — Depok, Jawa Barat</p>
+        </div>
+      </div>
+
+      <p class="text-xs text-gray-300 leading-relaxed">
+        Pilih saluran komunikasi yang paling nyaman bagi Anda untuk mendiskusikan kebutuhan audit laporan keuangan historis, kompilasi akuntansi, atau perikatan khusus lainnya.
+      </p>
+
+      <div class="space-y-3">
+        <a href="https://wa.me/6289529631082" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-lg bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/50 text-white flex items-center justify-between text-xs font-semibold transition">
+          <span class="flex items-center space-x-2.5">
+            <i class="fa-brands fa-whatsapp text-lg text-[#25D366]"></i>
+            <span>WhatsApp Langsung (+62 895-2963-1082)</span>
+          </span>
+          <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+
+        <a href="mailto:kapfauzidanrekan@gmail.com" class="w-full py-3 px-4 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20 text-white flex items-center justify-between text-xs font-semibold transition">
+          <span class="flex items-center space-x-2.5">
+            <i class="fa-solid fa-envelope text-lg text-gold"></i>
+            <span>Email Resmi (kapfauzidanrekan@gmail.com)</span>
+          </span>
+          <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+
+      <div class="pt-2 text-center">
+        <button onclick="closeConsultationModal()" class="text-xs text-gray-400 hover:text-white underline">
+          Tutup Jendela
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Feedback Toast -->
+  <div id="toastNotification" class="fixed bottom-6 left-6 z-50 bg-navy text-white border border-gold/60 px-5 py-3.5 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-24 opacity-0 pointer-events-none flex items-center space-x-3">
+    <div class="w-7 h-7 rounded-full bg-gold/20 text-gold flex items-center justify-center text-sm">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <div>
+      <p id="toastTitle" class="text-xs font-bold text-white">Pemberitahuan</p>
+      <p id="toastMessage" class="text-[11px] text-gray-300">Pesan terkirim.</p>
+    </div>
+  </div>
+
+  <script>
+    /* Universal photo upload triggers for all 6 team members */
+    function triggerMemberPhotoUpload(memberKey) {
+      var input = document.getElementById(memberKey + 'PhotoInput');
+      if (input) input.click();
+    }
+
+    function triggerPimpinanPhotoUpload() {
+      triggerMemberPhotoUpload('pimpinan');
+    }
+
+    function triggerBunayaPhotoUpload() {
+      triggerMemberPhotoUpload('bunaya');
+    }
+
+    function handleMemberPhotoSelect(event, targetClassPrefix, memberName) {
+      var file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var targets = document.querySelectorAll('.' + targetClassPrefix + '-img-target');
+        targets.forEach(function(img) {
+          img.src = e.target.result;
+          img.classList.remove('hidden');
+          var parent = img.parentElement;
+          if (parent) {
+            var fallback = parent.querySelector('.' + targetClassPrefix + '-fallback') || parent.querySelector('.' + targetClassPrefix + '-svg-fallback');
+            if (fallback) {
+              fallback.classList.add('hidden');
+              fallback.classList.remove('flex');
+            }
+          }
+        });
+        showToast("Foto Diperbarui", "Foto " + memberName + " telah berhasil dimuat.");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handlePimpinanPhotoFileSelect(event) {
+      handleMemberPhotoSelect(event, 'pimpinan', 'Fauzi Adani');
+    }
+
+    function handleBunayaPhotoFileSelect(event) {
+      handleMemberPhotoSelect(event, 'bunaya', 'Bunaya Dewi K.');
+    }
+
+    /* Scroll progress indicator */
+    window.addEventListener('scroll', function() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      var progressBar = document.getElementById('scroll-progress');
+      if (progressBar) progressBar.style.width = scrolled + "%";
+    });
+
+    /* Mobile Drawer Toggle */
+    var mobileBtn = document.getElementById('mobile-menu-btn');
+    var mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+      var mobileLinks = document.querySelectorAll('.mobile-link');
+      mobileLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+    }
+
+    /* Interactive Canvas Particle Constellation */
+    (function initConstellation() {
+      var canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var particles = [];
+      var mouse = { x: null, y: null, radius: 120 };
+
+      function resize() {
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      canvas.addEventListener('mousemove', function(e) {
+        var rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+
+      canvas.addEventListener('mouseleave', function() {
+        mouse.x = null;
+        mouse.y = null;
+      });
+
+      var numParticles = Math.min(Math.floor(window.innerWidth / 22), 45);
+      for (var i = 0; i < numParticles; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          radius: Math.random() * 1.8 + 1.2,
+          color: Math.random() > 0.4 ? 'rgba(201, 162, 39, 0.7)' : 'rgba(216, 188, 99, 0.4)'
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+
+          for (var j = i + 1; j < particles.length; j++) {
+            var p2 = particles[j];
+            var dx = p.x - p2.x;
+            var dy = p.y - p2.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 110) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = 'rgba(201, 162, 39, ' + (0.22 - dist / 500) + ')';
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    /* Spotlight Card Interactive Position */
+    var cards = document.querySelectorAll('.spotlight-card');
+    cards.forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', x + 'px');
+        card.style.setProperty('--mouse-y', y + 'px');
+      });
+    });
+
+    /* Animated Counter Intersection Observer */
+    var counterAnimated = false;
+    var counterSection = document.querySelector('.count-up');
+    if (counterSection && 'IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting && !counterAnimated) {
+            counterAnimated = true;
+            document.querySelectorAll('.count-up').forEach(function(counter) {
+              var target = +counter.getAttribute('data-target');
+              var current = 0;
+              var increment = target / 20;
+              var timer = setInterval(function() {
+                current += increment;
+                if (current >= target) {
+                  counter.textContent = target;
+                  clearInterval(timer);
+                } else {
+                  counter.textContent = Math.ceil(current);
+                }
+              }, 40);
+            });
+          }
+        });
+      }, { threshold: 0.5 });
+      observer.observe(counterSection);
+    }
+
+    /* Modal Controls */
+    function openConsultationModal() {
+      var modal = document.getElementById('consultationModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+    function closeConsultationModal() {
+      var modal = document.getElementById('consultationModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    /* Toast Notification Helper */
+    function showToast(title, message) {
+      var toast = document.getElementById('toastNotification');
+      var tTitle = document.getElementById('toastTitle');
+      var tMsg = document.getElementById('toastMessage');
+      if (toast && tTitle && tMsg) {
+        tTitle.textContent = title;
+        tMsg.textContent = message;
+        toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+        setTimeout(function() {
+          toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+        }, 4000);
+      }
+    }
+
+    /* Contact Form Submission Handler */
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      var nama = document.getElementById('nama').value;
+      var subjek = document.getElementById('subjek').value;
+      showToast("Permohonan Terkirim", "Terima kasih " + nama + ", kami akan merespons kebutuhan " + subjek + " Anda.");
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>
